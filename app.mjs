@@ -35,8 +35,8 @@ app.get('/', async (req, res) => {
     filter.year = req.query.year;
     needFilter = true;
   }
-  if (req.query.professorName) {
-    filter.professor = req.query.professorName; // Corrected to use req.query.professorName
+  if (req.query.professor) {
+    filter.professor = req.query.professor; 
     needFilter = true;
   }
 
