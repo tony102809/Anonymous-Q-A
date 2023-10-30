@@ -1,0 +1,1 @@
+const reviews = await Review.find();
