@@ -9,7 +9,7 @@ import './db.mjs';
 import session from 'express-session';
 const app = express();
 
-// set up express static
+// set up express static 
 import url from 'url';
 import path from 'path';
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
@@ -83,10 +83,28 @@ app.post('/reviews/add', (req, res) => {
     review: req.body.review
   });
 
-   c.save()
-     .then(savedReview => res.redirect('/'))
-     .catch(err => res.status(500).send('server error'));
+  c.save()
+      .then(savedReview => {
+      // PART 6
+      if (!req.session.reviews) {
+        req.session.reviews = [];
+      }
+      req.session.reviews.push(c);
 
+      res.redirect('/');
+    })
+    .catch(err => {
+      res.status(500).send('Server error');
+    });
+
+});
+
+//PART 6: My reviews
+app.get('/reviews/mine', (req, res) => {
+  // Check if the user's session has reviews; if not, initialize and display empty array
+  const s = req.session.reviews || [];
+
+  res.render('myReviews', { s });
 });
 
 
