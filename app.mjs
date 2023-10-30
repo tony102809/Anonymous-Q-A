@@ -6,6 +6,7 @@ import mongoose from 'mongoose'; // Import mongoose
 // Import the db.mjs file to execute database-related code
 import './db.mjs';
 
+import session from 'express-session';
 const app = express();
 
 // set up express static
@@ -22,6 +23,20 @@ app.use(express.urlencoded({ extended: false }));
 
 // Retrieve the model registered with mongoose
 const Review = mongoose.model('Review');
+
+// PART 5: SESSIONS
+const sessionOptions = {
+  secret: 'secret-key', 
+  saveUninitialized: false,
+  resave: false,
+};
+app.use(session(sessionOptions));
+app.use((req, res, next) => {
+  req.session.count = req.session.count ? req.session.count + 1 : 1;
+  res.locals.count = req.session.count;
+  next();
+});
+
 
 app.get('/', async (req, res) => {
   const filter = {};
