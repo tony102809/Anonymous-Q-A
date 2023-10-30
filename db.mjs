@@ -10,7 +10,7 @@ const Review = new mongoose.Schema({
     year: Number,
     professor: String,
     review: String,
-  });
+});
   
 
 // "register" it so that mongoose knows about it

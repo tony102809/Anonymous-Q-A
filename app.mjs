@@ -53,22 +53,26 @@ app.get('/', async (req, res) => {
   }
 });
 
-
-
-
-//Part 3: Filtering
-app.get('/', async (req, res) => {
-  try {
-
-
-    const reviews = await Review.find(filter).exec();
-    console.log(reviews);
-    res.render('reviews', { reviews });
-  } catch (error) {
-    res.render('error', { error });
-  }
+//Part 4: Adding a Review
+app.get('/reviews/add', (req, res) => {
+  res.render('addReview'); 
 });
 
+app.post('/reviews/add', (req, res) => {
+  const c = new Review({
+    courseNumber: req.body.courseNumber,
+    courseName: req.body.courseName,
+    semester: req.body.semester,
+    year: req.body.year,
+    professor: req.body.professor,
+    review: req.body.review
+  });
+
+   c.save()
+     .then(savedReview => res.redirect('/'))
+     .catch(err => res.status(500).send('server error'));
+
+});
 
 
 app.listen(process.env.PORT || 3000);
